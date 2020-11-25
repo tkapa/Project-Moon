@@ -10,6 +10,7 @@ public class Enemy : ShootableObject
     void Start()
     {
         enemyWSUI = gameObject.GetComponent<EnemyWSUI>();
+        enemyWSUI.AssignHBValues(MaximumHealth, CurrentHealth);
     }
 
     // Update is called once per frame
@@ -21,6 +22,6 @@ public class Enemy : ShootableObject
     public override void TakeDamage(float damage)
     {
         base.TakeDamage(damage);
-        enemyWSUI.AssignHBValues();
+        enemyWSUI.AssignHBValues(MaximumHealth, CurrentHealth);
     }
 }

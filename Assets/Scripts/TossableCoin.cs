@@ -6,8 +6,11 @@ public class TossableCoin : ShootableObject
 {
     public float ricochetRadius;
     public float ricochetDamage;
+    public float critMultiplier;
+    public float effectDuration;
 
     LineRenderer lr;
+    PlayerWeapon pw;
     public float lineWidth;
 
     public GameObject debugSphere;
@@ -16,9 +19,11 @@ public class TossableCoin : ShootableObject
     void Start()
     {
         lr = gameObject.GetComponent<LineRenderer>();
+        pw = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerWeapon>();
 
         MaximumHealth = 0.1f;
         CurrentHealth = 0.1f;
+        ricochetDamage = pw.weapon.weaponDamage;
     }
 
     // Update is called once per frame
@@ -32,9 +37,8 @@ public class TossableCoin : ShootableObject
         base.TakeDamage(damage);
 
         Transform currentPos = transform;
-        AreaDamageEnemies(currentPos.position, ricochetRadius, ricochetDamage);
-
-        Instantiate(debugSphere);
+        StartCoroutine(RicochetEffect(currentPos));
+        
         debugSphere.transform.localScale = new Vector3(ricochetRadius, ricochetRadius, ricochetRadius);
         debugSphere.transform.position = transform.position;
     }
@@ -48,7 +52,7 @@ public class TossableCoin : ShootableObject
             Enemy enemy = col.GetComponent<Enemy>();
             if (enemy != null && enemy.tag == "Enemy")
             {
-                enemy.TakeDamage(damage); 
+                enemy.TakeDamage(damage*critMultiplier); 
                 enemiesInRange.Add(col);
             }                 
         }
@@ -75,5 +79,14 @@ public class TossableCoin : ShootableObject
         }
 
         lr.SetPositions(points.ToArray());
+    }
+
+    IEnumerator RicochetEffect(Transform currentPos)
+    {
+        AreaDamageEnemies(currentPos.position, ricochetRadius, ricochetDamage);
+        Instantiate(debugSphere);
+        yield return new WaitForSeconds(effectDuration);
+        Destroy(debugSphere);
+        lr.positionCount = 0;
     }
 }

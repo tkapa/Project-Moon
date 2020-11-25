@@ -28,7 +28,7 @@ public class Weapon : MonoBehaviour
 
     private float _fireCooldown;
     private float _fireCooldownTimer;
-    private float _reloadTimer;
+    public float _reloadTimer;
 
     private Transform _mainCameraTransform;
 
@@ -94,7 +94,7 @@ public class Weapon : MonoBehaviour
     /// </summary>
     public virtual void Reload()
     {
-        if (_reloadTimer <= 0f)
+        if (_reloadTimer <= 0f && ammoCount != maximumAmmo)
         {
             _reloadTimer = reloadTime;
             StartCoroutine(nameof(ReloadCountdown));

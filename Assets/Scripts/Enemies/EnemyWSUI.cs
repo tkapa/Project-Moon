@@ -8,27 +8,24 @@ public class EnemyWSUI : MonoBehaviour
     public Slider healthBar;
     public Canvas enemyCanvas;
 
-    GameObject player;
+    Transform player;
     Enemy enemyScript;
 
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
-        enemyScript = gameObject.GetComponent<Enemy>();
-
-        AssignHBValues();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        enemyCanvas.transform.LookAt(player.transform.position);
+        enemyCanvas.transform.LookAt(player.position);
     }
 
-    public void AssignHBValues()
+    public void AssignHBValues(float maximumHealth, float currentHealth)
     {
-        healthBar.maxValue = enemyScript.MaximumHealth;
-        healthBar.value = enemyScript.CurrentHealth;
+        healthBar.maxValue = maximumHealth;
+        healthBar.value = currentHealth;
     }
 }

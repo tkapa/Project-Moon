@@ -13,6 +13,7 @@ public class PlayerWeapon : MonoBehaviour
     public void OnFire(InputAction.CallbackContext context)
     {
         _isFiring = context.ReadValueAsButton();
+        
     }
 
     public void OnReload(InputAction.CallbackContext context)
@@ -21,6 +22,10 @@ public class PlayerWeapon : MonoBehaviour
         {
             weapon.Reload();
         }
+    }
+
+    void Start() {
+        
     }
 
     // Update is called once per frame
