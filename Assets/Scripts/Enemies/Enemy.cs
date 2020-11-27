@@ -14,9 +14,10 @@ public class Enemy : ShootableObject
         }            
         else if(!GetComponent<EnemyWSUI>())
             Debug.LogError($"{gameObject.name} does not have an EnemyWSUI");
+        currentHealth = maximumHealth;
     }
 
-    private void Awake()
+    private void Start()
     {
         _enemyWSUI.AssignHBValues(maximumHealth, currentHealth);
     }

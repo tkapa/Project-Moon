@@ -8,6 +8,9 @@ using UnityEngine;
 /// </summary>
 public class Weapon : MonoBehaviour
 {
+    [Tooltip("The reserve ammo that the weapon has remaining")]
+    public int reserveAmmo = 30;
+
     [Tooltip("The maximum amount of ammo that the weapon can hold")]
     public int maximumAmmo = 10;
 
@@ -25,6 +28,10 @@ public class Weapon : MonoBehaviour
 
     [Tooltip("The damage of this Weapon")]
     public float weaponDamage = 50f;
+
+    public float accuracyDamBuff = 1;
+    public float accuracyRate;
+    public int accuracyCombo;
 
     private float _fireCooldown;
     private float _fireCooldownTimer;
@@ -83,8 +90,16 @@ public class Weapon : MonoBehaviour
 
             if (shootableObject != null)
             {
-                shootableObject.TakeDamage(weaponDamage);
+                shootableObject.TakeDamage(weaponDamage*accuracyDamBuff);
+                ++accuracyCombo;
+                accuracyDamBuff += accuracyRate;
             }
+            else
+            {
+                accuracyDamBuff = 1;
+                accuracyCombo = 1;
+            }
+                
         }
     }
 
@@ -135,8 +150,16 @@ public class Weapon : MonoBehaviour
             _reloadTimer -= Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
-
-        ammoCount = maximumAmmo;
+        if(reserveAmmo >= maximumAmmo)
+        {
+            ammoCount = maximumAmmo;
+            reserveAmmo -= ammoCount;
+        }            
+        else
+        {
+            ammoCount = reserveAmmo;
+            reserveAmmo = 0;
+        }            
 
         yield return null;
     }
