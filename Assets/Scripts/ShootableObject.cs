@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class ShootableObject : MonoBehaviour
 {
-    public float MaximumHealth = 100f;
-    public float CurrentHealth;
+    public float maximumHealth = 100f;
+    public float currentHealth;
 
     private void OnValidate()
     {
-        if (CurrentHealth != MaximumHealth)
-            CurrentHealth = MaximumHealth;
+        if (currentHealth != maximumHealth)
+            currentHealth = maximumHealth;
     }
 
     /// <summary>
@@ -19,16 +19,17 @@ public class ShootableObject : MonoBehaviour
     /// <param name="damage">Number to reduce Current Health by.</param>
     public virtual void TakeDamage(float damage)
     {
-        CurrentHealth -= damage;
+        currentHealth -= damage;
 
-        if (CurrentHealth <= 0f)
-            OnZeroHealth();
+        if (currentHealth <= 0f)
+            OnZeroHealth(damage);
     }
 
     /// <summary>
     /// What happens when on zero health.
     /// </summary>
-    public virtual void OnZeroHealth()
+    /// <param name="damage">Equal to the amount of damage it took before it died</param>
+    public virtual void OnZeroHealth(float damage)
     {
         Debug.Log($"{gameObject.name}: {nameof(OnZeroHealth)}");
     }

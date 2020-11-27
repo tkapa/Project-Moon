@@ -20,6 +20,14 @@ public class PlayerMovement : MonoBehaviour
             _controller = GetComponent<CharacterController>();
     }
 
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            //Call jump
+        }
+    }
+
     public void OnMove(InputAction.CallbackContext context)
     {
         _movementVector = context.ReadValue<Vector2>();
@@ -40,5 +48,10 @@ public class PlayerMovement : MonoBehaviour
     {
         var move = transform.right * vector.x + transform.forward * vector.y;
         _controller.Move((move * playerSpeed) * Time.deltaTime);
+    }
+
+    private void Jump()
+    {
+        //Do jumpy things here
     }
 }

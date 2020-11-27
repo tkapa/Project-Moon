@@ -4,24 +4,26 @@ using UnityEngine;
 
 public class Enemy : ShootableObject
 {
-    EnemyWSUI enemyWSUI;
+    [SerializeField] private EnemyWSUI _enemyWSUI;
 
-    // Start is called before the first frame update
-    void Start()
+    private void OnValidate()
     {
-        enemyWSUI = gameObject.GetComponent<EnemyWSUI>();
-        enemyWSUI.AssignHBValues(MaximumHealth, CurrentHealth);
+        if (_enemyWSUI == null && GetComponent<EnemyWSUI>())
+        {
+            _enemyWSUI = GetComponent<EnemyWSUI>();            
+        }            
+        else if(!GetComponent<EnemyWSUI>())
+            Debug.LogError($"{gameObject.name} does not have an EnemyWSUI");
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        _enemyWSUI.AssignHBValues(maximumHealth, currentHealth);
     }
 
     public override void TakeDamage(float damage)
     {
         base.TakeDamage(damage);
-        enemyWSUI.AssignHBValues(MaximumHealth, CurrentHealth);
+        _enemyWSUI.AssignHBValues(maximumHealth, currentHealth);
     }
 }

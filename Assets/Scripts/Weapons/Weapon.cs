@@ -101,11 +101,11 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (_fireCooldownTimer > 0f)
         {
-            _fireCooldownTimer -= Time.deltaTime;
+            _fireCooldownTimer -= Time.fixedDeltaTime;
         }
     }
 
